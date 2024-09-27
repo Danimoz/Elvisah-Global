@@ -6,6 +6,7 @@ import PaystackCheckout from "@/components/cart/paystackCheckout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import InlineLoader from "@/lib/loader";
+import { generateReferenceId } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -25,6 +26,7 @@ export default function Checkout(){
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [isFormValid, setIsFormValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [referenceId, setReferenceId] = useState('')
   const { push } = useRouter();
   
   const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
@@ -60,12 +62,10 @@ export default function Checkout(){
 
   const handlePaymentSuccess = async () => {
     setIsLoading(true)
-    const refId = localStorage.getItem('referenceId')
-    await createOrder(formData, { paymentReference: refId!, totalAmount: total })
+    await createOrder(formData, { paymentReference: referenceId, totalAmount: total })
     await clearCart()
     toast.success('Payment successful')
-    if (refId) localStorage.removeItem('referenceId')
-    push(`/thank-you?reference=${refId}`)
+    push(`/thank-you?reference=${referenceId}`)
   }
 
   const handlePaymentCancel = () => {
@@ -74,6 +74,11 @@ export default function Checkout(){
 
   useEffect(() => {
     closeCart()
+  }, [])
+
+  useEffect(() => {
+    const refId = generateReferenceId()
+    setReferenceId(refId)
   }, [])
 
   if (isLoading) return (
@@ -198,6 +203,7 @@ export default function Checkout(){
               onSuccess={handlePaymentSuccess}
               onClose={handlePaymentCancel}
               disabled={!isFormValid}
+              reference={referenceId}
             />
           </div>
           

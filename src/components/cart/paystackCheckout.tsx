@@ -10,21 +10,12 @@ interface PaystackButtonProps {
   disabled?: boolean
   onClose: () => void
   onSuccess: () => void
+  reference: string
 }
 
 
-export default function PaystackCheckout({ email, amount, disabled, onClose, onSuccess }: PaystackButtonProps){
-  const [referenceId, setReferenceId] = useState('')
-
-  useEffect(() => {
-    let storedReferenceId = localStorage.getItem('referenceId')
-    if (!storedReferenceId) {
-      storedReferenceId = generateReferenceId()
-      localStorage.setItem('referenceId', storedReferenceId)
-    }
-    setReferenceId(storedReferenceId)
-  }, [])
-
+export default function PaystackCheckout({ email, amount, disabled, onClose, onSuccess, reference }: PaystackButtonProps){
+  const [referenceId, setReferenceId] = useState(reference || '');
 
   const componentProps = {
     text: 'Proceed To Checkout',
