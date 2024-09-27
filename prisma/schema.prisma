@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  firstname String
+  lastname  String
+  password  String
+  isAdmin   Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Order     Order[]
+  Category  Category[]
+  Product   Product[]
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  description   String?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  createdBy     Int
+  createdByUser User      @relation(fields: [createdBy], references: [id])
+  Product       Product[]
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  slug        String      @unique
+  features    String[]
+  image       String
+  price       Float
+  inStock     Boolean     @default(true)
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  addedBy     Int
+  addedByUser User        @relation(fields: [addedBy], references: [id])
+  OrderItem   OrderItem[]
+
+  @@index([categoryId], name: "categoryId")
+}
+
+model Order {
+  id               Int         @id @default(autoincrement())
+  userId           Int?
+  user             User?       @relation(fields: [userId], references: [id])
+  createdAt        DateTime    @default(now())
+  customerEmail    String
+  totalAmount      Float
+  paymentReference String
+  updatedAt        DateTime    @updatedAt
+  OrderItem        OrderItem[]
+  shippingDetails  Shipping    @relation(fields: [shippingId], references: [id])
+  shippingId       Int
+  status           OrderStatus @default(PAID)
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Shipping {
+  id        Int     @id @default(autoincrement())
+  address   String
+  city      String
+  country   String
+  firstName String
+  lastName  String
+  phone     String
+  Order     Order[]
+}
+
+enum OrderStatus {
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
