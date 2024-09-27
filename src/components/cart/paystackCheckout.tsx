@@ -1,7 +1,6 @@
 'use client';
 
-import { generateReferenceId } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PaystackButton } from "react-paystack";
 
 interface PaystackButtonProps {
