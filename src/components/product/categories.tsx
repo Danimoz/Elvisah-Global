@@ -29,7 +29,7 @@ export default async function Categories(){
           <ul className="hidden md:block">
             <Suspense fallback={<p>Loading...</p>}>
               {categories.map(category => (
-                <FilterItem item={category} />
+                <FilterItem item={category} key={category.id} />
               ))}
             </Suspense>
           </ul>
