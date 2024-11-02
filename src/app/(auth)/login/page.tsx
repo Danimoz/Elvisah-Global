@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import LoginForm from "./form";
 import { Suspense } from "react";
+import InlineLoader from "@/lib/loader";
 
 export default function Login(){
   return (
@@ -11,7 +12,7 @@ export default function Login(){
           <CardDescription>Enter your credentials to log in.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<InlineLoader />}>
             <LoginForm />
           </Suspense>
         </CardContent>

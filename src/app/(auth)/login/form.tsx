@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/submitButton";
 import { toast } from "sonner";
-import { useEffect } from "react";
 
 const initialActionState = {
   message: '',
@@ -19,14 +18,16 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('to') ?? '/';
 
-  useEffect(() => {
-    if (formState.status !== 0 && formState.status !== 200 && formState.message) {
+  async function handleSubmit(formData: FormData) {
+    await formAction(formData);
+    if (formState.status >= 400) {
       toast.error(formState.message);
     }
-  }, [formState]);
+  }
   
+
   return (
-    <form action={formAction}>
+    <form action={handleSubmit}>
       <input type="hidden" name="redirectTo" value={redirectTo} />
       <div className="space-y-2 mb-4">
         <Label htmlFor="email">Email</Label>

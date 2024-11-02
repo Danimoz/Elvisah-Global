@@ -1,6 +1,8 @@
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import SignUpForm from "./form";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import InlineLoader from "@/lib/loader";
 
 export const metadata: Metadata = {
   title: "SignUp | Elvisah",
@@ -16,7 +18,9 @@ export default function SignUp(){
           <CardTitle className="text-2xl">SignUp</CardTitle>
         </CardHeader>
         <CardContent>
-          <SignUpForm />
+          <Suspense fallback={<InlineLoader />}>
+            <SignUpForm />
+          </Suspense>
         </CardContent>
       </Card>
     </main>

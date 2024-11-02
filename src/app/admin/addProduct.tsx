@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Category } from "@prisma/client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 
@@ -24,14 +24,16 @@ export default function AddProduct({ categories }: AddProductProps) {
   const [formState, formAction] = useFormState(createProduct, initialActionState);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
+  async function handleSubmit(formData: FormData) {
+    await formAction(formData);
     if (formState.status === 201) {
       toast.success(formState.message);
       formRef.current?.reset();
     } else {
       toast.error(formState.message);
     }
-  }, [formState.status])
+  }
+
   
   return (
     <Card className="shadow-2xl">
@@ -40,7 +42,7 @@ export default function AddProduct({ categories }: AddProductProps) {
         <CardDescription>Fill out the form to add a new product to your store.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4" action={formAction} ref={formRef}>
+        <form className="space-y-4" action={handleSubmit} ref={formRef}>
           <div className="space-y-2">
             <Label htmlFor="product-name">Product Name *</Label>
             <Input id="product-name" name='name' placeholder="Enter product name" />

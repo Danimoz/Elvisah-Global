@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import { useFormState } from "react-dom"
 import { toast } from "sonner"
 
@@ -19,14 +19,15 @@ export default function AddCategory() {
   const [formState, formAction] = useFormState(addCategory, initialActionState);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
+  async function handleSubmit(formData: FormData) {
+    await formAction(formData);
     if (formState.status === 201) {
       toast.success(formState.message);
       formRef.current?.reset();
     } else {
       toast.error(formState.message);
     }
-  }, [formState.status])
+  }
 
   return (
     <Card>
@@ -35,7 +36,7 @@ export default function AddCategory() {
         <CardDescription>Fill out the form to add a new category.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form ref={formRef} className="space-y-4" action={formAction}>
+        <form ref={formRef} className="space-y-4" action={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="category-name">Category Name</Label>
             <Input id="category-name" placeholder="Enter category name" name="name" required />

@@ -17,16 +17,18 @@ export default function SignUpForm(){
   const [formState, formAction] = useFormState(signUp, initialActionState);
   const { replace } = useRouter();
 
-  
-  if (formState.status === 201) {
-    toast.success(formState.message);
-    replace('/login');
-  } else {
-    toast.error(formState.message);
+  async function submitForm(formData: FormData) {
+    await formAction(formData);
+    if (formState.status === 201) {
+      toast.success(formState.message);
+      replace('/login');
+    } else {
+      toast.error(formState.message);
+    }
   }
 
   return (
-    <form action={formAction} className="my-4">
+    <form action={submitForm} className="my-4">
       <div className="mb-3 space-y-2">
         <Label htmlFor="firstName" className="text-lg mb-1">First Name</Label>
         <Input id='firstName' type="text" name='firstName' placeholder="Enter First Name" required />
