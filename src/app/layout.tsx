@@ -5,6 +5,8 @@ import Navbar from '@/components/navbar'
 import Footer from '@/components/footer';
 import { Toaster } from 'sonner'
 import { CartProvider } from '@/components/cart/cartProvider';
+import { Suspense } from 'react';
+import InlineLoader from '@/lib/loader';
 
 const montserrat = Montserrat({ subsets: ['latin'] })
 
@@ -19,9 +21,11 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
       <body className={montserrat.className}>
         <CartProvider>
           <Toaster richColors position="top-right" closeButton />
-          <Navbar />
-          {children}
-          <Footer />
+          <Suspense fallback={<InlineLoader />}>
+            <Navbar />
+            {children}
+            <Footer />
+          </Suspense>
         </CartProvider>
       </body>
     </html>
