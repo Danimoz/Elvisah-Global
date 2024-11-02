@@ -2,14 +2,18 @@
 
 import { ImagesSlider } from './ui/images-slider';
 import phone from '@/images/phone.jpg';
-import homeAppliances from '@/images/homeapliances.jpg';
+import slide1 from '@/images/1002128114.jpg'
+import slide2 from '@/images/1002128116.jpg'
+import slide3 from '@/images/1002128141.jpg'
 import { Button } from './ui/button';
 import Link from 'next/link';
 
 
 const slides = [
   { image: phone },
-  { image: homeAppliances },
+  { image: slide1 },
+  { image: slide2 },
+  { image: slide3 },
 ]
 
 export default function HomeHero() {

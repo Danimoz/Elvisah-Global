@@ -7,12 +7,13 @@ import { useCart } from "./cartProvider";
 import { Button } from '../ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { calculateItemTotal } from '@/lib/utils';
 
 export default function CartDisplay() {
   const { items, removeItem, updateItemQuantity } = useCart();
   const [loading, setLoading] = useState<number | null>(null)
 
-  const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const total = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
 
   const handleUpdateQuantity = async(id: number, newQuantity: number) => {
     if (newQuantity < 1) return
@@ -59,7 +60,7 @@ export default function CartDisplay() {
             />
             <div className='flex-1'>
               <h5 className="font-semibold text-xl">{item.product.name}</h5>
-              <p className="text-gray-500">₦{(item.product.price * item.quantity).toLocaleString()}</p>
+              <p className="text-gray-500">₦{calculateItemTotal(item).toLocaleString()}</p>
               <div className="flex items-center space-x-4 mt-2 border border-neutral-200 rounded-lg">
                 <Button 
                   size='icon' 

@@ -5,7 +5,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card'
 
 export default function ProductGrid({ products }: { products: Product[] }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
       {products.map(product => (
         <Card key={product.id}>
           <div className="relative group overflow-hidden rounded-lg h-[400px]">
@@ -23,7 +23,16 @@ export default function ProductGrid({ products }: { products: Product[] }) {
           <CardContent className='p-0 m-0 border-0'>
             <div className="space-y-2 px-4 py-2">
               <CardTitle className='p-2 border-b border-gray-200'>{product.name}</CardTitle>
-              <h2 className="font-bold tracking-wider">₦ {product.price.toLocaleString()}</h2>
+              <div className="flex items-center">
+                {(!product.discount || product.discount === 0) ? (
+                  <span className="font-bold tracking-wider">₦ {product.price.toLocaleString()}</span>
+                ): (
+                  <>
+                    <span className="font-bold text-sm text-gray-500 line-through">₦ {product.price.toLocaleString()}</span>
+                    <span className="tracking-wider font-bold">₦ {product.discount?.toLocaleString()}</span>
+                  </>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

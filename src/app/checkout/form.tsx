@@ -6,7 +6,7 @@ import PaystackCheckout from "@/components/cart/paystackCheckout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import InlineLoader from "@/lib/loader";
-import { generateReferenceId } from "@/lib/utils";
+import { calculateItemTotal, generateReferenceId } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -29,29 +29,38 @@ export default function CheckoutForm(){
   const [referenceId, setReferenceId] = useState('')
   const { push } = useRouter();
   
-  const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+  const total = items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+
+  const validateEmail = (email: string) => {
+    return /^\S+@\S+\.\S+$/.test(email);
+  };
+
+  const validateField = useCallback((name: string, value: string) => {
+    if (!value.trim()) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+    }
+    if (name === 'email' && !validateEmail(value)) {
+      return 'Email is invalid';
+    }
+    return '';
+  }, []);
 
   const validateForm = useCallback(() => {
     const errors: Record<string, string> = {};
     let isValid = true;
   
     Object.entries(formData).forEach(([key, value]) => {
-      if (!value.trim()) {
-        errors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+      const error = validateField(key, value);
+      if (error) {
+        errors[key] = error;
         isValid = false;
       }
     });
-
-    // Special case for email validation
-    if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "Email is invalid";
-      isValid = false;
-    }
   
     setFormErrors(errors);
     setIsFormValid(isValid);
     return isValid;
-  }, [formData]);
+  }, [formData, validateField]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -80,6 +89,10 @@ export default function CheckoutForm(){
     const refId = generateReferenceId()
     setReferenceId(refId)
   }, [])
+
+  useEffect(() => {
+    validateForm();
+  }, [formData, validateForm]);
 
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -185,7 +198,7 @@ export default function CheckoutForm(){
             {items.map(item => (
               <div key={item.product.id} className="flex justify-between">
                 <span>{item.product.name} x {item.quantity}</span>
-                <span>₦{(item.product.price * item.quantity).toLocaleString()}</span>
+                <span>₦{calculateItemTotal(item).toLocaleString()}</span>
               </div>
             ))}
             <div className="border-t pt-4">

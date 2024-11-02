@@ -63,6 +63,10 @@ export default function AddProduct({ categories }: AddProductProps) {
             <Input id="product-price" name='price' placeholder="Enter product price"  type="number" required />
           </div>
           <div className="space-y-2">
+            <Label htmlFor="product-discount">Discount</Label>
+            <Input id="product-discount" name="discount" placeholder="Enter discount amount" type="number" step="0.01" min="0" />
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="product-image">Image *</Label>
             <Input id="product-image" name='image' placeholder="Enter product image URL" type="file" accept="image/*" required />
           </div>

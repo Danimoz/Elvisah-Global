@@ -135,3 +135,28 @@ export async function sendOrderStatusUpdate(order: Order){
     return { status: 400, message: 'An error occured' }
   }
 }
+
+
+export async function sendEmail({ name, email, message }: { name: string, email: string, message: string }){
+  const resend = new Resend(process.env.RESEND_API_KEY as string)
+  
+  try {
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM as string,
+      to: [`${process.env.ADMIN_EMAIL}`],
+      subject: `Contact Form Submission!`,
+      replyTo: process.env.ADMIN_EMAIL as string,
+      text: `A new message has been received from the contact form.
+
+      Name: ${name}
+      Email: ${email}
+      Message: ${message}
+      `,
+    })
+
+    return { status: 200, message: 'Email sent successfully!' }
+  } catch (error) {
+    console.log(error)
+    return { status: 400, message: 'An error occured' }
+  }
+}

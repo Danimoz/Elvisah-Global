@@ -30,7 +30,7 @@ export default async function Home() {
               {categories.map((category) => (
                 <Card key={category.id}>
                   <div className="relative group overflow-hidden rounded-lg aspect-square">
-                    <Link href={`/product?category=${category.name}`} className="absolute inset-0 z-10" prefetch={false} />
+                    <Link href={`/product?category=${category.name}`} className="absolute inset-0 z-10" />
                     <Image
                       alt={category.name}
                       src={category.image as string}

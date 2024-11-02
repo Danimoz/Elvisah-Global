@@ -3,16 +3,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
-import { FaSearch, FaUser } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa'
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import CartDisplay from "./cart/cartDisplay";
 import CartIcon from "./cart/cartIcon";
 import { useCart } from "./cart/cartProvider";
+import Search from "./search";
 
 const navbarLinks = [
   { name: 'Home', link: '/'},
   { name: 'Shop', link: '/product'},
-  { name: 'Contact', link: '#'},
+  { name: 'Contact', link: '/contact'},
 ]
 
 
@@ -29,14 +30,12 @@ export default function Navbar() {
 
         <div className="hidden md:flex space-x-6">
           {navbarLinks.map((link) => (
-            <Link key={link.name} href={link.link} className="p-3 uppercase" prefetch={false}>{link.name}</Link>
+            <Link key={link.name} href={link.link} className="p-3 uppercase">{link.name}</Link>
           ))}
         </div>
 
         <div className="hidden md:flex space-x-6 justify-center items-center">
-          <div>
-            <FaSearch size={24} />
-          </div>
+          <Search />
           <Sheet open={isCartOpen} onOpenChange={(open) => open ? openCart() : closeCart()}>
             <SheetTrigger>
               <CartIcon />
@@ -59,13 +58,11 @@ export default function Navbar() {
 
       <div className={isMenuOpen ? 'w-full' : 'hidden'}>
         {navbarLinks.map((link) => (
-          <Link key={link.name} href={link.link} className="p-3 uppercase block" prefetch={false}>{link.name}</Link>
+          <Link key={link.name} href={link.link} className="p-3 uppercase block">{link.name}</Link>
         ))}
 
-        <div className="flex space-x-6 justify-center">
-          <div>
-            <FaSearch size={24} />
-          </div>
+        <div className="flex space-x-6 justify-center items-center py-2">
+          <Search />
           <Sheet open={isCartOpen} onOpenChange={(open) => open ? openCart() : closeCart()}>
             <SheetTrigger>
               <CartIcon />

@@ -20,7 +20,7 @@ export default function LoginForm() {
   const redirectTo = searchParams.get('to') ?? '/';
 
   useEffect(() => {
-    if (formState.status !== 200 && formState.message) {
+    if (formState.status !== 0 && formState.status !== 200 && formState.message) {
       toast.error(formState.message);
     }
   }, [formState]);

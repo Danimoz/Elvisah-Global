@@ -1,5 +1,12 @@
 import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import SignUpForm from "./form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "SignUp | Elvisah",
+  description: "Create a new account",
+  robots: "noindex, nofollow",
+}
 
 export default function SignUp(){
   return (

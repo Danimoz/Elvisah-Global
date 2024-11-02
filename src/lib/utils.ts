@@ -1,3 +1,4 @@
+import { CartItem } from "@/components/cart/cartProvider";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -14,4 +15,12 @@ export function generateReferenceId() {
 
 export function formatDate(date: Date) {
   return new Date(date).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' })
+}
+
+export const calculateItemTotal = (item: CartItem) => {
+  const discountedPrice = item.product.discount && item.product.discount > 0
+    ? item.product.discount
+    : item.product.price
+  
+  return discountedPrice * item.quantity
 }

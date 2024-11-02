@@ -37,7 +37,7 @@ export default function AddToCart({ product }: { product: Product }) {
     <Button size='lg' className="p-4 tracking-wide" onClick={handleAddToCart}>
       {isLoading ? (
         <span>
-          <LuLoader2 className="animate-spin  mr-3" size={24} />
+          <LuLoader2 className="animate-spin mr-3" size={24} />
         </span>
       ): (
         <>

@@ -9,9 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -47,6 +46,7 @@ model Product {
   features    String[]
   image       String
   price       Float
+  discount    Float?
   inStock     Boolean     @default(true)
   categoryId  Int
   category    Category    @relation(fields: [categoryId], references: [id])

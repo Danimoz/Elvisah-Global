@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/lib/prisma";
+import { sendEmail } from "@/lib/sendemails";
 import { getSession } from "@/lib/session";
 import { User } from "@prisma/client";
 import { UploadApiResponse, v2 as cloudinary } from "cloudinary";
@@ -22,6 +23,8 @@ export async function createProduct(_prevState: unknown, formData: FormData){
   const features = (formData.get('features') as string).split(',');
   const price = Number(formData.get('price'));
   const category = Number(formData.get('category'));
+  const discount = formData.get('discount');
+  const discountPrice = discount ? Number(formData.get('discountPrice')) : null;
   if (!name  || !price|| img.size < 1 ) {
     return { message: "All fields are required", status: 400 };
   }
@@ -43,9 +46,8 @@ export async function createProduct(_prevState: unknown, formData: FormData){
     const user = session.user as Omit<User, 'password'>;
     const slug = name.toLowerCase().replace(/\s/g, '-');
     await prisma.product.create({
-      data: { name, image, slug, features, price, categoryId: category, addedBy: user.id } 
+      data: { name, image, slug, features, price, discount: discountPrice,  categoryId: category, addedBy: user.id } 
     });
-
     revalidatePath('/', 'layout')
     return { message: "Successful!", status: 201 };
   } catch (error) {
@@ -115,4 +117,22 @@ export async function updateProduct(id: number, name: string, price: number, inS
     console.log(error)
     return { message: "Something went wrong, Please try again!", status: 500 };
   }
-}  
+} 
+
+export async function contact(_prevState: unknown, formData: FormData){
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const message = formData.get('message') as string;
+
+  if (!name || !email || !message) {
+    return { message: "All fields are required", status: 400 };
+  }
+
+  try {
+    await sendEmail({ name, email, message });
+    return { message: "Successful!", status: 200 };
+  } catch (error) {
+    console.log(error);
+    return { message: "Something went wrong, Please try again!", status: 500 };
+  }
+}

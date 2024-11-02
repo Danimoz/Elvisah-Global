@@ -8,6 +8,7 @@ import ProductGrid from "@/components/product/product-grid";
 
 interface searchParams {
   category?: string
+  q?: string
 }
 
 
@@ -27,13 +28,14 @@ interface ProductsResponse {
 
 export default async function Products({ searchParams }: { searchParams: searchParams }) {
   const category = searchParams.category
+  const search = searchParams.q
 
   let productsData: Product[] | ProductsResponse;
   
   if (category) {
     productsData = await getProductsByCategory(category);
   } else {
-    productsData = await getAllProducts();
+    productsData = await getAllProducts(1, 24, search);
   }
 
   const products = 'products' in productsData ? productsData.products : productsData;

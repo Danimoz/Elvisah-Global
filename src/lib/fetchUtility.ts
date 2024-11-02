@@ -52,11 +52,17 @@ export async function getProductsByCategory(category: string) {
   }
 }
 
-export async function getAllProducts(page=1, size=24) {
+export async function getAllProducts(page=1, size=24, search?: string) {
   try {
     const products = await prisma.product.findMany({
       take: size,
       skip: size * (page - 1),
+      where: {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { category: { name: { contains: search, mode: 'insensitive' } } },
+        ],
+      },
     });
 
     const totalProducts = await prisma.product.count();

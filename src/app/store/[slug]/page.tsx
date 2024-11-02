@@ -37,8 +37,17 @@ export default async function SingleProduct({ params }: { params: { slug: string
 
           <div className="md:flex-1 px-4">
             <h2 className="text-3xl md:text-5xl font-bold mb-2">{product.name}</h2>
-        
-            <h4 className="text-2xl tracking-wide font-semibold mb-4">₦ {Number(product.price.toFixed(2)).toLocaleString()}</h4>
+
+            <div className="flex items-center">
+              {(!product.discount || product.discount === 0) ? (
+                <span className="font-bold tracking-wider text-2xl">₦ {product.price.toLocaleString()}</span>
+              ): (
+                <>
+                  <span className="font-bold text-sm text-gray-500 line-through">₦ {product.price.toLocaleString()}</span>
+                  <span className="tracking-wider font-bold">₦ {product.discount?.toLocaleString()}</span>
+                </>
+              )}
+            </div>        
 
             <div className="my-4">
               {product.features?.map(feature => (
