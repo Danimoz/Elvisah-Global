@@ -19,7 +19,7 @@ export default function ProductTable({ products }: { products: Product[]}){
   const handleSave = async (id: number) => {
     setLoading(true)
     try {
-      await updateProduct(id, newName, newPrice, newStock);
+      await updateProduct(id, newName, newPrice, newStock, newDiscount);
       toast.success('Product updated successfully')
       setEditingId(null)
     } catch(error){
@@ -70,7 +70,7 @@ export default function ProductTable({ products }: { products: Product[]}){
             {editingId === product.id ? (
               <Input 
                 value={newDiscount}
-                onChange={(e) => setNewPrice(Number(e.target.value))}
+                onChange={(e) => setNewDiscount(Number(e.target.value))}
               />
             ) : `${product.discount?.toLocaleString() || '' }`}
           </TableCell>

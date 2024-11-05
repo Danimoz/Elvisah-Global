@@ -28,7 +28,7 @@ export default function ProductGrid({ products }: { products: Product[] }) {
                   <span className="font-bold tracking-wider">₦ {product.price.toLocaleString()}</span>
                 ): (
                   <>
-                    <span className="font-bold text-sm text-gray-500 line-through">₦ {product.price.toLocaleString()}</span>
+                    <span className="font-bold text-sm text-gray-500 line-through mr-2">₦ {product.price.toLocaleString()}</span>
                     <span className="tracking-wider font-bold">₦ {product.discount?.toLocaleString()}</span>
                   </>
                 )}
