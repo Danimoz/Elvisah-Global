@@ -29,6 +29,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Price</TableHead>
+                <TableHead>Discount</TableHead>
                 <TableHead>Stock</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>

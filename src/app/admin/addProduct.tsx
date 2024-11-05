@@ -29,7 +29,7 @@ export default function AddProduct({ categories }: AddProductProps) {
     if (formState.status === 201) {
       toast.success(formState.message);
       formRef.current?.reset();
-    } else {
+    } else if (formState.status >= 400) {
       toast.error(formState.message);
     }
   }

@@ -13,6 +13,7 @@ export default function ProductTable({ products }: { products: Product[]}){
   const [editingId, setEditingId] = useState<number | null>(null)
   const [newName, setNewName] = useState('')
   const [newPrice, setNewPrice] = useState(0)
+  const [newDiscount, setNewDiscount] = useState(0)
   const [newStock, setNewStock] = useState(false)
 
   const handleSave = async (id: number) => {
@@ -33,13 +34,15 @@ export default function ProductTable({ products }: { products: Product[]}){
     setEditingId(null)
     setNewName('')
     setNewPrice(0)
+    setNewDiscount(0)
     setNewStock(false)
   }
 
-  const handleEdit = (id: number, name: string, price: number, stock: boolean) => {
+  const handleEdit = (id: number, name: string, price: number, stock: boolean, discount?: number) => {
     setEditingId(id)
     setNewName(name)
     setNewPrice(price)
+    setNewDiscount(discount || 0)
     setNewStock(stock)
   }
 
@@ -66,6 +69,14 @@ export default function ProductTable({ products }: { products: Product[]}){
           <TableCell>
             {editingId === product.id ? (
               <Input 
+                value={newDiscount}
+                onChange={(e) => setNewPrice(Number(e.target.value))}
+              />
+            ) : `${product.discount?.toLocaleString() || '' }`}
+          </TableCell>
+          <TableCell>
+            {editingId === product.id ? (
+              <Input 
                 checked={newStock}
                 onChange={(e) => setNewStock(e.target.checked)}
                 type="checkbox"
@@ -79,7 +90,7 @@ export default function ProductTable({ products }: { products: Product[]}){
                 <Button onClick={handleCancel} disabled={loading}>Cancel</Button>
               </>
             ) : (
-              <Button onClick={() => handleEdit(product.id, product.name, product.price, product.inStock)} disabled={loading}>Edit</Button>
+              <Button onClick={() => handleEdit(product.id, product.name, product.price, product.inStock, product.discount || 0)} disabled={loading}>Edit</Button>
             )}
           </TableCell>
         </TableRow>

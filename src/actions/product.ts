@@ -24,7 +24,8 @@ export async function createProduct(_prevState: unknown, formData: FormData){
   const price = Number(formData.get('price'));
   const category = Number(formData.get('category'));
   const discount = formData.get('discount');
-  const discountPrice = discount ? Number(formData.get('discountPrice')) : null;
+  const discountPrice = discount ? Number(discount) : null;
+  
   if (!name  || !price|| img.size < 1 ) {
     return { message: "All fields are required", status: 400 };
   }
@@ -101,32 +102,13 @@ export default async function addCategory(_prevState: unknown, formData: FormDat
   }
 }
 
-export async function updateProduct(id: number, name: string, price: number, inStock: boolean) { 
-  const session = await getSession();
-  if (!session) return { message: "Unauthorized", status: 401 };
-
-  try {
-    await prisma.product.update({
-      where: { id },
-      data: { name, price, inStock }
-    });
-
-    revalidatePath('/', 'layout')
-    return { message: "Successful!", status: 200 };
-  } catch (error) {
-    console.log(error)
-    return { message: "Something went wrong, Please try again!", status: 500 };
-  }
-} 
-
 export async function contact(_prevState: unknown, formData: FormData){
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const message = formData.get('message') as string;
 
-  if (!name || !email || !message) {
+  if (!name || !email || !message) 
     return { message: "All fields are required", status: 400 };
-  }
 
   try {
     await sendEmail({ name, email, message });
@@ -136,3 +118,21 @@ export async function contact(_prevState: unknown, formData: FormData){
     return { message: "Something went wrong, Please try again!", status: 500 };
   }
 }
+
+export async function updateProduct(id: number, name: string, price: number, inStock: boolean, discount?: number){ 
+  const session = await getSession();
+  if (!session) return { message: "Unauthorized", status: 401 };
+
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: { name, price, inStock, discount }
+    });
+
+    revalidatePath('/', 'layout')
+    return { message: "Successful!", status: 200 };
+  } catch (error) {
+    console.log(error)
+    return { message: "Something went wrong, Please try again!", status: 500 };
+  }
+} 
