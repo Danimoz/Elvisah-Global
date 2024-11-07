@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Link } from 'lucide-react';
 import { useRef } from 'react';
 import { useFormState } from 'react-dom';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp, FaInstagram } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { toast } from 'sonner';
 
@@ -85,10 +85,11 @@ export default function ContactPage() {
           <div className="mt-4 space-y-2">
             <h2 className="text-xl font-semibold mb-4">Instagram</h2>
             <Button 
-              className="w-full flex items-center justify-center bg-pink-500 hover:bg-pink-600"
+              className="w-full bg-pink-500 hover:bg-pink-600"
               asChild
             >
-              <Link href="https://instagram.com/official_elvisah_global" target='_blank'>
+              <Link href="https://instagram.com/official_elvisah_global" target='_blank' className='flex items-center justify-center'>
+                <FaInstagram className="mr-2" />
                 Reach us on Instagram
               </Link>
             </Button>            
