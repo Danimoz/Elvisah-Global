@@ -5,6 +5,7 @@ import SubmitButton from '@/components/submitButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Link } from 'lucide-react';
 import { useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -70,7 +71,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 space-y-2">
             <h2 className="text-xl font-semibold mb-4">Chat with us on WhatsApp</h2>
             <Button 
               onClick={handleWhatsAppClick}
@@ -79,6 +80,18 @@ export default function ContactPage() {
               <FaWhatsapp className="mr-2" />
               Chat on WhatsApp
             </Button>
+          </div>
+
+          <div className="mt-4 space-y-2">
+            <h2 className="text-xl font-semibold mb-4">Instagram</h2>
+            <Button 
+              className="w-full flex items-center justify-center bg-pink-500 hover:bg-pink-600"
+              asChild
+            >
+              <Link href="https://instagram.com/official_elvisah_global" target='_blank'>
+                Reach us on Instagram
+              </Link>
+            </Button>            
           </div>
         </div>
       </div>

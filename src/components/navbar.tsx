@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
-import { FaUser } from 'react-icons/fa'
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import CartDisplay from "./cart/cartDisplay";
 import CartIcon from "./cart/cartIcon";
@@ -13,6 +12,7 @@ import Search from "./search";
 const navbarLinks = [
   { name: 'Home', link: '/'},
   { name: 'Shop', link: '/product'},
+  { name: 'Orders', link: '/orders'},
   { name: 'Contact', link: '/contact'},
 ]
 
@@ -44,9 +44,6 @@ export default function Navbar() {
               <CartDisplay />
             </SheetContent>
           </Sheet>
-          <div>
-            <FaUser size={24} />
-          </div>
         </div>
 
         <div className="md:hidden">
@@ -71,9 +68,6 @@ export default function Navbar() {
               <CartDisplay />
             </SheetContent>
           </Sheet>
-          <div>
-            <FaUser size={24} />
-          </div>
         </div>
 
       </div>
